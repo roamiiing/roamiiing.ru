@@ -1,0 +1,32 @@
+html, body {
+  @apply bg-black;
+  scroll-behavior: smooth;
+}
+
+/* Disable dragging images */
+img {
+  -webkit-user-drag: none;
+}
+
+* {
+  font-family: 'Open Sans', sans-serif;
+  @apply text-gray-400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  @apply text-white;
+}
+
+h6 {
+  @apply text-xl;
+}
+
+.blur {
+  filter: blur(4px);
+}
+
+/* Utility to properly place an element with position: absolute */
+.center {
+  @apply transform -translate-x-1/2 -translate-y-1/2;
+}
