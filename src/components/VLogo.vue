@@ -12,16 +12,18 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
+
 import logoImgUrl from '../assets/images/logo.svg';
 
-export default {
-  name: 'Logo',
+export default defineComponent({
+  name: 'VLogo',
   setup() {
     return {
       logoImgUrl,
     };
   },
-};
+});
 </script>
 
 <style>

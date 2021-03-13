@@ -1,12 +1,23 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
   purge: { content: ['./public/**/*.html', './src/**/*.vue'] },
   darkMode: false, // or 'media' or 'class'
   theme: {
+    fontFamily: {
+      default: '"Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+    },
+    fontWeight: {
+      regular: 400,
+      light: 300,
+    },
     extend: {
       colors: {
         green: '#8CCB75',
       },
       inset: {
+        full: '100%',
         '-halfScreen': '-50vh',
       },
       width: {
@@ -14,10 +25,14 @@ module.exports = {
         logo: '532px',
       },
       height: {
+        18: '4.5rem',
         fullLogoSmall: '41px',
         logoSmall: '35px',
         logo: '92px',
         fullLogo: '108px',
+      },
+      backgroundImage: {
+        blackout: 'linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, .7), rgba(0, 0, 0, 0))',
       },
       animation: {
         fallParticles: 'fallParticles 1.7s ease-in forwards',
@@ -52,5 +67,23 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addUtilities }) => {
+      const newUtilities = {
+        '.filter-blur-3': {
+          filter: 'blur(3px)',
+        },
+        '.backdrop-blur-3': {
+          'backdrop-filter': 'blur(3px)',
+        },
+        '.scroll-smooth': {
+          'scroll-behavior': 'smooth',
+        },
+        '.drag-none': {
+          '-webkit-user-drag': 'none',
+        },
+      };
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    }),
+  ],
 };

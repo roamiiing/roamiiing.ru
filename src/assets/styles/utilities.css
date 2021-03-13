@@ -1,0 +1,6 @@
+@layer utilities {
+  /* Utility to properly place an element with position: absolute */
+  .center {
+    @apply transform -translate-x-1/2 -translate-y-1/2;
+  }
+}

@@ -1,5 +1,9 @@
+@import './fonts.css';
+
+@import './fontello.css';
+
 @import './tailwind.css';
 
-@import './fonts.css';
+@import './utilities.css';
 
 @import './base.css';

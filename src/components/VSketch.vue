@@ -4,8 +4,15 @@
 
 <script lang="ts">
 /* eslint-disable no-param-reassign */
+
+// TODO: Reimplement this sketch with plain js and canvas
 import P5 from 'p5';
-import { ref, onMounted } from 'vue';
+import {
+  ref,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+} from 'vue';
 
 interface WaveOptions {
   noiseOffset?: number;
@@ -66,19 +73,20 @@ class Wave {
   }
 }
 
-export default {
-  name: 'Sketch',
+export default defineComponent({
+  name: 'VSketch',
   setup() {
-    const sketchParent = ref();
+    const sketchParent = ref<HTMLElement | undefined>();
+
+    let p5: P5;
 
     onMounted(() => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const p5 = new P5((p) => {
+      p5 = new P5((p) => {
         const waves: Wave[] = [];
         p.setup = () => {
           p.noiseSeed(103); // always the same animation
 
-          p.createCanvas(sketchParent.value.clientWidth, window.innerHeight)
+          p.createCanvas(sketchParent.value?.clientWidth, window.innerHeight)
             .parent(sketchParent.value);
 
           waves.push(new Wave(p, {
@@ -89,6 +97,7 @@ export default {
             constraint: 500,
             rgba: [3, 130, 140, 50],
           }));
+
           waves.push(new Wave(p, {
             noiseOffset: -200,
             noiseStep: 0.001,
@@ -97,6 +106,7 @@ export default {
             constraint: 300,
             rgba: [3, 180, 30, 70],
           }));
+
           waves.push(new Wave(p, {
             noiseOffset: -100,
             noiseStep: 0.005,
@@ -104,6 +114,7 @@ export default {
             height: 170,
             rgba: [3, 200, 9, 80],
           }));
+
           waves.push(new Wave(p, {
             noiseOffset: -900,
             noiseStep: 0.005,
@@ -111,12 +122,14 @@ export default {
             height: 190,
             rgba: [3, 200, 200, 70],
           }));
+
           waves.push(new Wave(p, {
             noiseStep: 0.002,
             speed: 0.0005,
             height: 155,
             rgba: [2, 200, 8, 130],
           }));
+
           waves.push(new Wave(p, {
             noiseOffset: 100,
             noiseStep: 0.003,
@@ -125,6 +138,7 @@ export default {
             constraint: 300,
             rgba: [0, 49, 45, 255],
           }));
+
           waves.push(new Wave(p, {
             noiseOffset: 150,
             noiseStep: 0.002,
@@ -133,6 +147,7 @@ export default {
             constraint: 150,
             rgba: [1, 35, 34, 255],
           }));
+
           waves.push(new Wave(p, {
             noiseOffset: 200,
             noiseStep: 0.0025,
@@ -149,14 +164,18 @@ export default {
         };
 
         p.windowResized = () => {
-          p.resizeCanvas(sketchParent.value.clientWidth, window.innerHeight);
+          p.resizeCanvas(sketchParent.value?.clientWidth, window.innerHeight);
         };
       });
+    });
+
+    onUnmounted(() => {
+      p5.remove();
     });
 
     return {
       sketchParent,
     };
   },
-};
+});
 </script>
