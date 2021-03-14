@@ -20,9 +20,18 @@ function loadLocaleMessages(): LocaleMessages<VueMessageType> {
   return messages;
 }
 
+function getLanguageFromNavigator(): string | undefined {
+  const language = window.navigator.language.slice(0, 2);
+  const languages = new Map<string, string>(Object.entries({
+    en: 'en',
+    ru: 'ru',
+  }));
+  return languages.get(language) || undefined;
+}
+
 export default createI18n({
   legacy: false,
-  locale: 'en',
+  locale: window.localStorage.getItem('locale') || getLanguageFromNavigator() || 'en',
   fallbackLocale: 'en',
   messages: loadLocaleMessages(),
 });

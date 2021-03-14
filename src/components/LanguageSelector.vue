@@ -12,7 +12,7 @@
       >
         <img :alt="code" :src="icon" class="w-6 h-6 rounded-full">
       </VButton>
-      <VButton class="w-10 h-10 relative" @click="toggle">
+      <VButton key="toggleButton" class="w-10 h-10 relative" @click="toggle">
         <transition name="fade">
           <i
             v-if="toggled"
@@ -51,6 +51,7 @@ export default defineComponent({
     const setLocale = (_locale: string) => {
       if (locale.value !== _locale) {
         locale.value = _locale;
+        window.localStorage.setItem('locale', _locale);
       }
       toggle();
     };
@@ -86,7 +87,7 @@ export default defineComponent({
 .list-complete-enter-from,
 .list-complete-leave-to {
   opacity: 0;
-  transform: translateX(-30px);
+  transform: translateY(-30px);
 }
 
 .list-complete-leave-active {
