@@ -1,27 +1,16 @@
 <template>
   <div class="w-10 h-36 flex flex-col justify-between">
     <transition-group name="list-complete">
-      <!--  This is actually the worst implementation ever, but animation only works with this  -->
-      <!--  TODO: Somehow implement this properly with v-for  -->
       <VButton
-        v-if="toggled"
+        v-for="{ code, icon } in localesComputed"
+        :key="code"
         class="w-10 h-10"
         :class="{
-          'border-green': locale === 'ru',
+          'border-green': locale === code,
         }"
-        @click="setLocale('ru')"
+        @click="setLocale(code)"
       >
-        <img alt="ru" class="w-6 h-6 rounded-full" :src="flagRuImgUrl">
-      </VButton>
-      <VButton
-        v-if="toggled"
-        class="w-10 h-10"
-        :class="{
-          'border-green': locale === 'en',
-        }"
-        @click="setLocale('en')"
-      >
-        <img alt="uk" class="w-6 h-6 rounded-full" :src="flagUkImgUrl">
+        <img :alt="code" :src="icon" class="w-6 h-6 rounded-full">
       </VButton>
       <VButton class="w-10 h-10 relative" @click="toggle">
         <transition name="fade">
@@ -40,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useToggle from '../hooks/useToggle';
 
@@ -66,11 +55,22 @@ export default defineComponent({
       toggle();
     };
 
+    const locales = [{
+      icon: flagRuImgUrl,
+      code: 'ru',
+    }, {
+      icon: flagUkImgUrl,
+      code: 'en',
+    }];
+
+    const localesComputed = computed(() => (toggled.value ? locales : []));
+
     return {
       toggle,
       toggled,
       setLocale,
       locale,
+      localesComputed,
       flagRuImgUrl,
       flagUkImgUrl,
     };
@@ -78,7 +78,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .list-complete-item {
   transition: all 0.8s ease;
 }
@@ -95,7 +95,7 @@ export default defineComponent({
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.2s ease;
 }
 
 .fade-enter-from,

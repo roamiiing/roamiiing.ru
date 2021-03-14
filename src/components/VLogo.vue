@@ -1,10 +1,10 @@
 <template>
   <div class="relative w-logoSmall h-fullLogoSmall sm:w-logo sm:h-fullLogo">
-    <img
+    <InlineSvg
       class="absolute bottom-0 left-0 w-logoSmall h-logoSmall sm:w-logo sm:h-logo"
       :src="logoImgUrl"
       alt="logo"
-    >
+    />
     <div class="dot"></div>
     <div class="dot"></div>
     <div class="dot"></div>
@@ -13,11 +13,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import InlineSvg from 'vue-inline-svg';
 
 import logoImgUrl from '../assets/images/logo.svg';
 
 export default defineComponent({
   name: 'VLogo',
+  components: {
+    InlineSvg,
+  },
   setup() {
     return {
       logoImgUrl,
@@ -26,7 +30,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .dot {
   @apply absolute -top-halfScreen w-1 h-1 sm:w-2.5 sm:h-2.5
   rounded-full bg-green animate-fallParticles;

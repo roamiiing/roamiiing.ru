@@ -10,3 +10,5 @@ declare module '*.svg' {
 
   export default value;
 }
+
+declare module 'vue-inline-svg';
