@@ -30,8 +30,6 @@ import { useI18n } from 'vue-i18n';
 import VLogo from '../components/VLogo.vue';
 import VSketch from '../components/VSketch.vue';
 
-import downArrowImgUrl from '../assets/images/downArrow.svg';
-
 export default defineComponent({
   name: 'Home',
   components: {
@@ -42,7 +40,6 @@ export default defineComponent({
     const { t } = useI18n();
 
     return {
-      downArrowImgUrl,
       t,
     };
   },

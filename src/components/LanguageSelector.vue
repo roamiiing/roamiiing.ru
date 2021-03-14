@@ -10,7 +10,7 @@
         }"
         @click="setLocale(code)"
       >
-        <img :alt="code" :src="icon" class="w-6 h-6 rounded-full">
+        <InlineSvg :alt="code" :src="icon" class="w-6 h-6 rounded-full" />
       </VButton>
       <VButton key="toggleButton" class="w-10 h-10 relative" @click="toggle">
         <transition name="fade">
@@ -31,6 +31,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import InlineSvg from 'vue-inline-svg';
 import useToggle from '../hooks/useToggle';
 
 import VButton from './VButton.vue';
@@ -42,6 +43,7 @@ export default defineComponent({
   name: 'LanguageSelector',
   components: {
     VButton,
+    InlineSvg,
   },
   setup() {
     const { toggle, toggled } = useToggle();
