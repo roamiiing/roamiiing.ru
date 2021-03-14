@@ -1,8 +1,6 @@
 <template>
-  <div class="w-full h-full" :key="key">
-    <router-view class="bg-black" />
-    <VHeader />
-  </div>
+  <VHeader />
+  <router-view class="bg-black" />
 </template>
 
 <script lang="ts">

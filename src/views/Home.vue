@@ -11,13 +11,12 @@
       </div>
       <a class="absolute bottom-12 left-1/2 center">
         <div class="animate-bounce">
-          <img
-            :src="downArrowImgUrl"
-            alt="arrow down"
+          <i
+            class="icon-down-open-big text-4xl"
             data-aos="zoom-in"
             data-aos-delay="500"
             data-aos-anchor-placement="top-bottom"
-          >
+          ></i>
         </div>
       </a>
     </section>

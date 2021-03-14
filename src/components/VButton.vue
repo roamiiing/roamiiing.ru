@@ -14,6 +14,7 @@
       hover:text-white
       transition-all
       duration-300
+      select-none
     "
   >
     <slot></slot>
