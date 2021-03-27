@@ -1,7 +1,33 @@
 {
   "home": {
-    "switch-language": "версия&nbsp;на&nbsp;русском&nbsp;🇷🇺",
-    "web-developer": "web developer",
-    "message-me": "message&nbsp;me&nbsp;💌"
+    "web-developer": "web developer"
+  },
+  "form": {
+    "name": {
+      "placeholder": "name",
+      "letters-only": "make sure your name contains only letters",
+      "too-short": "provided name is too short",
+      "too-long": "provided name is too long"
+    },
+    "email": {
+      "placeholder": "email",
+      "invalid": "invalid email"
+    },
+    "message": {
+      "placeholder": "message",
+      "disallowed-chars": "provided message contains disallowed characters",
+      "too-short": "provided message is too short (min: 100 characters)",
+      "too-long": "provided message is too long (max: 10000 characters)"
+    },
+    "submit": "submit"
+  },
+  "feedback": {
+    "heading": "feedback",
+    "no-content": "right now this website is at the content stage, but, even despite this, you can contact me"
+  },
+  "footer": {
+    "heading": "that's all 🙃",
+    "this-was": "this was <span class=\"text-white\">roamiiing</span>, thanks for attention",
+    "copyright": "Vitaliy Lyovkin &#169; 2021"
   }
 }

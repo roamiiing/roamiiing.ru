@@ -7,7 +7,7 @@
     "
   >
     <LanguageSelector />
-    <a href="mailto:roamiiing@roamiiing.ru">
+    <a href="#feedback">
       <VButton class="w-10 h-10">
         <i class="icon-mail"></i>
       </VButton>
@@ -30,6 +30,7 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n();
+
     return {
       t,
     };

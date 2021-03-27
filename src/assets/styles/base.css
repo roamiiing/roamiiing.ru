@@ -30,6 +30,10 @@ h6 {
   @apply text-xl;
 }
 
+a {
+  @apply text-blue-400 transition-colors duration-200;
+}
+
 a:hover {
   @apply text-white;
 }
