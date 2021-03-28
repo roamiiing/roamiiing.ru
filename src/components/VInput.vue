@@ -26,11 +26,7 @@ import {
   computed,
   toRefs,
 } from 'vue';
-
-interface ValidationStep {
-  regex: RegExp;
-  error?: string;
-}
+import { StringSchema } from 'yup';
 
 export default defineComponent({
   name: 'VInput',
@@ -40,7 +36,7 @@ export default defineComponent({
       required: false,
     },
     validationModel: {
-      type: Object as () => ValidationStep[],
+      type: StringSchema,
       required: false,
     },
     type: {
@@ -53,19 +49,10 @@ export default defineComponent({
     const model = ref('');
     const { validationModel } = toRefs(props);
 
-    const testRegex = (str: string, { regex, error }: ValidationStep) => {
-      // replacing '\n' with '' is needed to validate length of a multiline string
-      if (!regex.test(str.replace(/\n/g, ''))) {
-        throw new Error(
-          error || 'invalid value',
-        );
-      }
-    };
-
     const error = computed<string | undefined>(() => {
       try {
         if (validationModel && validationModel.value) {
-          validationModel.value.forEach((v) => testRegex(model.value, v));
+          validationModel.value.validateSync(model.value);
         }
       } catch (e) {
         return e.message;

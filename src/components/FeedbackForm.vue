@@ -32,6 +32,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
+import * as yup from 'yup';
 import useInput from '../hooks/useInput';
 
 import VInput from './VInput.vue';
@@ -62,26 +63,25 @@ export default defineComponent({
       onInput: onMessageInput,
     } = useInput();
 
-    const createStep = (regex: RegExp, error?: string) => ({ regex, error });
+    const nameModel = computed(() => yup
+      .string()
+      .trim()
+      .required(t('form.name.required'))
+      .matches(/^[a-zA-Zа-яА-ЯёЁ\s]*$/, t('form.name.letters-only'))
+      .max(30, ({ max }) => t('form.name.too-long', { max })));
 
-    // TODO: Use `yup` for validation and somehow make it reactive
-    const nameModel = computed(() => [
-      createStep(/^[a-zA-Zа-яА-ЯёЁ\s]*$/, t('form.name.letters-only')),
-      createStep(/^.+$/, t('form.name.too-short')),
-      createStep(/^.{0,50}$/, t('form.name.too-long')),
-    ]);
+    const emailModel = computed(() => yup
+      .string()
+      .trim()
+      .required(t('form.email.required'))
+      .email(t('form.email.invalid')));
 
-    const emailModel = computed(() => [
-      // eslint, why you do that? 🧐
-      // eslint-disable-next-line no-useless-escape
-      createStep(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, t('form.email.invalid')),
-    ]);
-
-    const messageModel = computed(() => [
-      createStep(/^[a-zA-Zа-яА-ЯёЁ0-9!.?\-_=+*():;,/\s]*$/, t('form.message.disallowed-chars')),
-      createStep(/^.{100,}$/, t('form.message.too-short')),
-      createStep(/^.{0,10000}$/, t('form.message.too-long')),
-    ]);
+    const messageModel = computed(() => yup
+      .string()
+      .trim()
+      .required(t('form.message.required'))
+      .min(100, ({ min }) => t('form.message.too-short', { min }))
+      .max(10000, ({ max }) => t('form.message.too-long', { max })));
 
     const formIsValid = computed(() => (
       [nameIsValid, messageIsValid, emailIsValid].every((v) => v.value)));

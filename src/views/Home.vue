@@ -36,8 +36,8 @@
       <p class="mb-6" v-html="t('footer.this-was')"></p>
       <small v-html="t('footer.copyright')"></small>
       <small class="mb-20">
-        <a href="mailto:roamiiing@roamiiing.ru">
-          roamiiing@roamiiing.ru
+        <a href="mailto:web@roamiiing.ru">
+          web@roamiiing.ru
         </a>
       </small>
     </footer>

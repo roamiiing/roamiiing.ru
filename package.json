@@ -21,7 +21,8 @@
     "vue-i18n": "^9.0.0-rc.7",
     "vue-inline-svg": "^3.0.0-beta.2",
     "vue-router": "^4.0.0-0",
-    "vue-typed-emit": "^1.1.0"
+    "vue-typed-emit": "^1.1.0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@intlify/vue-i18n-loader": "^2.0.0-rc.1",
