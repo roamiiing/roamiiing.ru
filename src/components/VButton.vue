@@ -3,21 +3,30 @@
     <slot></slot>
   </div>
   <button v-else :class="classBind">
-    <slot></slot>
+    <VLoader v-if="loading" />
+    <slot v-else></slot>
   </button>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, toRefs } from 'vue';
+import VLoader from './VLoader.vue';
 
 export default defineComponent({
   name: 'VButton',
+  components: {
+    VLoader,
+  },
   props: {
     htmlButton: {
       type: Boolean,
       default: false,
     },
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
       type: Boolean,
       default: false,
     },

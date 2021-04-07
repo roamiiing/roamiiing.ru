@@ -1,5 +1,12 @@
 <template>
-  <div class="w-full flex flex-col items-center">
+  <form
+    v-if="!success"
+    @submit.prevent="submit"
+    class="w-full flex flex-col items-center"
+    :class="{
+      'pointer-events-none opacity-70': loading,
+    }"
+  >
     <VInput
       @type="onNameInput"
       :validation-model="nameModel"
@@ -21,16 +28,27 @@
     <div class="px-4 w-full flex justify-center">
       <VButton
         class="h-14 max-w-xs w-full"
+        html-button
+        :loading="loading"
         :disabled="!formIsValid"
       >
         {{ t('form.submit') }}
       </VButton>
     </div>
+    <div v-if="error" class="text-red-600 text-center mt-8">{{ error }}</div>
+  </form>
+  <div
+    v-else
+    class="text-center"
+  >
+    <div class="mb-3"><i class="icon-ok text-5xl text-green" data-aos="fade-in"></i></div>
+    <h3 class="text-green mb-6">{{ t('form.sent') }}</h3>
+    <p>{{ t('form.answer-soon') }}</p>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 import useInput from '../hooks/useInput';
@@ -46,6 +64,10 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n();
+
+    const loading = ref(false);
+    const statusCode = ref<number | undefined>();
+    const success = ref(false);
 
     const {
       reference: nameRef,
@@ -86,6 +108,48 @@ export default defineComponent({
     const formIsValid = computed(() => (
       [nameIsValid, messageIsValid, emailIsValid].every((v) => v.value)));
 
+    const submit = async () => {
+      loading.value = true;
+      statusCode.value = undefined;
+      success.value = false;
+
+      // TODO: Maybe use axios to request?
+      const response = await fetch('https://email-feedback.herokuapp.com/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: nameRef.value,
+          email: emailRef.value,
+          message: messageRef.value,
+        }),
+      });
+
+      loading.value = false;
+
+      statusCode.value = response.status;
+      if (response.status === 200) {
+        success.value = true;
+      }
+    };
+
+    const error = computed<string | undefined>(() => {
+      if (statusCode.value && statusCode.value >= 300) {
+        switch (statusCode.value) {
+          case 403:
+            return t('form.errors.403');
+          case 429:
+            return t('form.errors.429');
+          case 500:
+            return t('form.errors.500');
+          default:
+            return t('form.errors.unknown');
+        }
+      }
+      return undefined;
+    });
+
     return {
       t,
       onNameInput,
@@ -95,6 +159,10 @@ export default defineComponent({
       emailModel,
       messageModel,
       formIsValid,
+      loading,
+      error,
+      success,
+      submit,
     };
   },
 });

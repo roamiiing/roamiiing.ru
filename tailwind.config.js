@@ -39,6 +39,7 @@ module.exports = {
       },
       animation: {
         fallParticles: 'fallParticles 1.7s ease-in forwards',
+        bounceParticles: 'bounceParticles 1.4s ease-in-out infinite',
       },
       keyframes: {
         fallParticles: {
@@ -62,6 +63,20 @@ module.exports = {
           },
           '100%': {
             top: 0,
+          },
+        },
+        bounceParticles: {
+          '0%': {
+            transform: 'translateY(0)',
+          },
+          '20%': {
+            transform: 'translateY(-13px)',
+          },
+          '40%': {
+            transform: 'translateY(13px)',
+          },
+          '60%': {
+            transform: 'translateY(0px)',
           },
         },
       },
