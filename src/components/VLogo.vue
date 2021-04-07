@@ -11,23 +11,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from 'vue';
 import InlineSvg from 'vue-inline-svg';
 
 import logoImgUrl from '../assets/images/logo.svg';
-
-export default defineComponent({
-  name: 'VLogo',
-  components: {
-    InlineSvg,
-  },
-  setup() {
-    return {
-      logoImgUrl,
-    };
-  },
-});
 </script>
 
 <style scoped>

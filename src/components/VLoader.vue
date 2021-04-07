@@ -6,14 +6,6 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'VLoader',
-});
-</script>
-
 <style scoped>
 .dot {
   @apply w-2 h-2 mx-1 rounded-full bg-white animate-bounceParticles;

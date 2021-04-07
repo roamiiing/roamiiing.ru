@@ -18,9 +18,10 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {
-  defineComponent,
+  defineEmit,
+  defineProps,
   ref,
   watch,
   computed,
@@ -28,54 +29,46 @@ import {
 } from 'vue';
 import { StringSchema } from 'yup';
 
-export default defineComponent({
-  name: 'VInput',
-  props: {
-    placeholder: {
-      type: String,
-      required: false,
-    },
-    validationModel: {
-      type: StringSchema,
-      required: false,
-    },
-    type: {
-      type: String,
-      validate: (val: string) => ['email', 'textarea'].includes(val),
-      required: false,
-    },
+const props = defineProps({
+  placeholder: {
+    type: String,
+    required: false,
   },
-  setup(props, { emit }) {
-    const model = ref('');
-    const { validationModel } = toRefs(props);
-
-    const error = computed<string | undefined>(() => {
-      try {
-        if (validationModel && validationModel.value) {
-          validationModel.value.validateSync(model.value);
-        }
-      } catch (e) {
-        return e.message;
-      }
-      return undefined;
-    });
-
-    watch(model, () => emit('type', model.value, !error.value));
-
-    const classBind = computed(() => ({
-      'border-opacity-100': model.value,
-      'border-white border-opacity-50 hover:border-opacity-70': !model.value,
-      'border-green': !error.value && model.value,
-      'border-red-500': error.value && model.value,
-    }));
-
-    return {
-      model,
-      error,
-      classBind,
-    };
+  validationModel: {
+    type: StringSchema,
+    required: false,
+  },
+  type: {
+    type: String,
+    validate: (val: string) => ['email', 'textarea'].includes(val),
+    required: false,
   },
 });
+
+const emit = defineEmit();
+
+const model = ref('');
+const { validationModel } = toRefs(props);
+
+const error = computed<string | undefined>(() => {
+  try {
+    if (validationModel && validationModel.value) {
+      validationModel.value.validateSync(model.value);
+    }
+  } catch (e) {
+    return e.message;
+  }
+  return undefined;
+});
+
+watch(model, () => emit('type', model.value, !error.value));
+
+const classBind = computed(() => ({
+  'border-opacity-100': model.value,
+  'border-white border-opacity-50 hover:border-opacity-70': !model.value,
+  'border-green': !error.value && model.value,
+  'border-red-500': error.value && model.value,
+}));
 </script>
 
 <style scoped>

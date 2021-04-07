@@ -44,27 +44,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
 import FeedbackForm from '../components/FeedbackForm.vue';
 import VSketch from '../components/VSketch.vue';
 import VLogo from '../components/VLogo.vue';
 
-export default defineComponent({
-  name: 'Home',
-  components: {
-    FeedbackForm,
-    VSketch,
-    VLogo,
-  },
-  setup() {
-    const { t } = useI18n();
-
-    return {
-      t,
-    };
-  },
-});
+const { t } = useI18n();
 </script>

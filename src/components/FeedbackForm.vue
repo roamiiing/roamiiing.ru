@@ -47,8 +47,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 import useInput from '../hooks/useInput';
@@ -56,114 +56,90 @@ import useInput from '../hooks/useInput';
 import VInput from './VInput.vue';
 import VButton from './VButton.vue';
 
-export default defineComponent({
-  name: 'FeedbackForm',
-  components: {
-    VButton,
-    VInput,
-  },
-  setup() {
-    const { t } = useI18n();
+const { t } = useI18n();
 
-    const loading = ref(false);
-    const statusCode = ref<number | undefined>();
-    const success = ref(false);
+const loading = ref(false);
+const statusCode = ref<number | undefined>();
+const success = ref(false);
 
-    const {
-      reference: nameRef,
-      isValid: nameIsValid,
-      onInput: onNameInput,
-    } = useInput();
-    const {
-      reference: emailRef,
-      isValid: emailIsValid,
-      onInput: onEmailInput,
-    } = useInput();
-    const {
-      reference: messageRef,
-      isValid: messageIsValid,
-      onInput: onMessageInput,
-    } = useInput();
+const {
+  reference: nameRef,
+  isValid: nameIsValid,
+  onInput: onNameInput,
+} = useInput();
+const {
+  reference: emailRef,
+  isValid: emailIsValid,
+  onInput: onEmailInput,
+} = useInput();
+const {
+  reference: messageRef,
+  isValid: messageIsValid,
+  onInput: onMessageInput,
+} = useInput();
 
-    const nameModel = computed(() => yup
-      .string()
-      .trim()
-      .required(t('form.name.required'))
-      .matches(/^[a-zA-Zа-яА-ЯёЁ\s]*$/, t('form.name.letters-only'))
-      .max(30, ({ max }) => t('form.name.too-long', { max })));
+const nameModel = computed(() => yup
+  .string()
+  .trim()
+  .required(t('form.name.required'))
+  .matches(/^[a-zA-Zа-яА-ЯёЁ\s]*$/, t('form.name.letters-only'))
+  .max(30, ({ max }) => t('form.name.too-long', { max })));
 
-    const emailModel = computed(() => yup
-      .string()
-      .trim()
-      .required(t('form.email.required'))
-      .email(t('form.email.invalid')));
+const emailModel = computed(() => yup
+  .string()
+  .trim()
+  .required(t('form.email.required'))
+  .email(t('form.email.invalid')));
 
-    const messageModel = computed(() => yup
-      .string()
-      .trim()
-      .required(t('form.message.required'))
-      .min(100, ({ min }) => t('form.message.too-short', { min }))
-      .max(10000, ({ max }) => t('form.message.too-long', { max })));
+const messageModel = computed(() => yup
+  .string()
+  .trim()
+  .required(t('form.message.required'))
+  .min(100, ({ min }) => t('form.message.too-short', { min }))
+  .max(10000, ({ max }) => t('form.message.too-long', { max })));
 
-    const formIsValid = computed(() => (
-      [nameIsValid, messageIsValid, emailIsValid].every((v) => v.value)));
+const formIsValid = computed(() => (
+  [nameIsValid, messageIsValid, emailIsValid].every((v) => v.value)));
 
-    const submit = async () => {
-      loading.value = true;
-      statusCode.value = undefined;
-      success.value = false;
+const submit = async () => {
+  loading.value = true;
+  statusCode.value = undefined;
+  success.value = false;
 
-      // TODO: Maybe use axios to request?
-      const response = await fetch('https://email-feedback.herokuapp.com/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: nameRef.value,
-          email: emailRef.value,
-          message: messageRef.value,
-        }),
-      });
+  // TODO: Maybe use axios to request?
+  const response = await fetch('https://email-feedback.herokuapp.com/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: nameRef.value,
+      email: emailRef.value,
+      message: messageRef.value,
+    }),
+  });
 
-      loading.value = false;
+  loading.value = false;
 
-      statusCode.value = response.status;
-      if (response.status === 200) {
-        success.value = true;
-      }
-    };
+  statusCode.value = response.status;
+  if (response.status === 200) {
+    success.value = true;
+  }
+};
 
-    const error = computed<string | undefined>(() => {
-      if (statusCode.value && statusCode.value >= 300) {
-        switch (statusCode.value) {
-          case 403:
-            return t('form.errors.403');
-          case 429:
-            return t('form.errors.429');
-          case 500:
-            return t('form.errors.500');
-          default:
-            return t('form.errors.unknown');
-        }
-      }
-      return undefined;
-    });
-
-    return {
-      t,
-      onNameInput,
-      onEmailInput,
-      onMessageInput,
-      nameModel,
-      emailModel,
-      messageModel,
-      formIsValid,
-      loading,
-      error,
-      success,
-      submit,
-    };
-  },
+const error = computed<string | undefined>(() => {
+  if (statusCode.value && statusCode.value >= 300) {
+    switch (statusCode.value) {
+      case 403:
+        return t('form.errors.403');
+      case 429:
+        return t('form.errors.429');
+      case 500:
+        return t('form.errors.500');
+      default:
+        return t('form.errors.unknown');
+    }
+  }
+  return undefined;
 });
 </script>

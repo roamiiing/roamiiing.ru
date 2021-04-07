@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import InlineSvg from 'vue-inline-svg';
@@ -39,46 +39,27 @@ import VButton from './VButton.vue';
 import flagRuImgUrl from '../assets/images/flag-ru.svg';
 import flagUkImgUrl from '../assets/images/flag-uk.svg';
 
-export default defineComponent({
-  name: 'LanguageSelector',
-  components: {
-    VButton,
-    InlineSvg,
-  },
-  setup() {
-    const { toggle, toggled } = useToggle();
+const { toggle, toggled } = useToggle();
 
-    const { locale } = useI18n();
+const { locale } = useI18n();
 
-    const setLocale = (_locale: string) => {
-      if (locale.value !== _locale) {
-        locale.value = _locale;
-        window.localStorage.setItem('locale', _locale);
-      }
-      toggle();
-    };
+const setLocale = (_locale: string) => {
+  if (locale.value !== _locale) {
+    locale.value = _locale;
+    window.localStorage.setItem('locale', _locale);
+  }
+  toggle();
+};
 
-    const locales = [{
-      icon: flagRuImgUrl,
-      code: 'ru',
-    }, {
-      icon: flagUkImgUrl,
-      code: 'en',
-    }];
+const locales = [{
+  icon: flagRuImgUrl,
+  code: 'ru',
+}, {
+  icon: flagUkImgUrl,
+  code: 'en',
+}];
 
-    const localesComputed = computed(() => (toggled.value ? locales : []));
-
-    return {
-      toggle,
-      toggled,
-      setLocale,
-      locale,
-      localesComputed,
-      flagRuImgUrl,
-      flagUkImgUrl,
-    };
-  },
-});
+const localesComputed = computed(() => (toggled.value ? locales : []));
 </script>
 
 <style scoped>

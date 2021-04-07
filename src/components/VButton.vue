@@ -8,41 +8,30 @@
   </button>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, toRefs } from 'vue';
+<script setup lang="ts">
+import { computed, defineProps, toRefs } from 'vue';
 import VLoader from './VLoader.vue';
 
-export default defineComponent({
-  name: 'VButton',
-  components: {
-    VLoader,
+const props = defineProps({
+  htmlButton: {
+    type: Boolean,
+    default: false,
   },
-  props: {
-    htmlButton: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
-  setup(props) {
-    const { disabled } = toRefs(props);
-
-    const classBind = computed(() => ({
-      'pointer-events-none opacity-50': disabled.value,
-    }));
-
-    return {
-      classBind,
-    };
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const { disabled } = toRefs(props);
+
+const classBind = computed(() => ({
+  'pointer-events-none opacity-50': disabled.value,
+}));
 </script>
 
 <style scoped>

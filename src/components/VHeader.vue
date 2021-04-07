@@ -15,25 +15,11 @@
   </header>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
 import VButton from './VButton.vue';
 import LanguageSelector from './LanguageSelector.vue';
 
-export default defineComponent({
-  name: 'VHeader',
-  components: {
-    VButton,
-    LanguageSelector,
-  },
-  setup() {
-    const { t } = useI18n();
-
-    return {
-      t,
-    };
-  },
-});
+const { t } = useI18n();
 </script>

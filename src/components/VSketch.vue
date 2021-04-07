@@ -2,17 +2,12 @@
   <div ref="sketchParent"></div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 /* eslint-disable no-param-reassign */
 
 // TODO: Reimplement this sketch with plain js and canvas
 import P5 from 'p5';
-import {
-  ref,
-  defineComponent,
-  onMounted,
-  onUnmounted,
-} from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 interface WaveOptions {
   noiseOffset?: number;
@@ -73,109 +68,100 @@ class Wave {
   }
 }
 
-export default defineComponent({
-  name: 'VSketch',
-  setup() {
-    const sketchParent = ref<HTMLElement | undefined>();
+const sketchParent = ref<HTMLElement | undefined>();
 
-    let p5: P5;
+let p5: P5;
 
-    onMounted(() => {
-      p5 = new P5((p) => {
-        const waves: Wave[] = [];
-        p.setup = () => {
-          p.noiseSeed(103); // always the same animation
+onMounted(() => {
+  p5 = new P5((p) => {
+    const waves: Wave[] = [];
+    p.setup = () => {
+      p.noiseSeed(103); // always the same animation
 
-          p.createCanvas(sketchParent.value?.clientWidth, window.innerHeight)
-            .parent(sketchParent.value);
+      p.createCanvas(sketchParent.value?.clientWidth, window.innerHeight)
+        .parent(sketchParent.value);
 
-          waves.push(new Wave(p, {
-            noiseOffset: -300,
-            noiseStep: 0.001,
-            speed: -0.0001,
-            height: 300,
-            constraint: 500,
-            rgba: [3, 130, 140, 50],
-          }));
+      waves.push(new Wave(p, {
+        noiseOffset: -300,
+        noiseStep: 0.001,
+        speed: -0.0001,
+        height: 300,
+        constraint: 500,
+        rgba: [3, 130, 140, 50],
+      }));
 
-          waves.push(new Wave(p, {
-            noiseOffset: -200,
-            noiseStep: 0.001,
-            speed: -0.0001,
-            height: 200,
-            constraint: 300,
-            rgba: [3, 180, 30, 70],
-          }));
+      waves.push(new Wave(p, {
+        noiseOffset: -200,
+        noiseStep: 0.001,
+        speed: -0.0001,
+        height: 200,
+        constraint: 300,
+        rgba: [3, 180, 30, 70],
+      }));
 
-          waves.push(new Wave(p, {
-            noiseOffset: -100,
-            noiseStep: 0.005,
-            speed: 0.0006,
-            height: 170,
-            rgba: [3, 200, 9, 80],
-          }));
+      waves.push(new Wave(p, {
+        noiseOffset: -100,
+        noiseStep: 0.005,
+        speed: 0.0006,
+        height: 170,
+        rgba: [3, 200, 9, 80],
+      }));
 
-          waves.push(new Wave(p, {
-            noiseOffset: -900,
-            noiseStep: 0.005,
-            speed: 0.0006,
-            height: 190,
-            rgba: [3, 200, 200, 70],
-          }));
+      waves.push(new Wave(p, {
+        noiseOffset: -900,
+        noiseStep: 0.005,
+        speed: 0.0006,
+        height: 190,
+        rgba: [3, 200, 200, 70],
+      }));
 
-          waves.push(new Wave(p, {
-            noiseStep: 0.002,
-            speed: 0.0005,
-            height: 155,
-            rgba: [2, 200, 8, 130],
-          }));
+      waves.push(new Wave(p, {
+        noiseStep: 0.002,
+        speed: 0.0005,
+        height: 155,
+        rgba: [2, 200, 8, 130],
+      }));
 
-          waves.push(new Wave(p, {
-            noiseOffset: 100,
-            noiseStep: 0.003,
-            speed: 0.001,
-            height: 100,
-            constraint: 300,
-            rgba: [0, 49, 45, 255],
-          }));
+      waves.push(new Wave(p, {
+        noiseOffset: 100,
+        noiseStep: 0.003,
+        speed: 0.001,
+        height: 100,
+        constraint: 300,
+        rgba: [0, 49, 45, 255],
+      }));
 
-          waves.push(new Wave(p, {
-            noiseOffset: 150,
-            noiseStep: 0.002,
-            speed: 0.002,
-            height: 50,
-            constraint: 150,
-            rgba: [1, 35, 34, 255],
-          }));
+      waves.push(new Wave(p, {
+        noiseOffset: 150,
+        noiseStep: 0.002,
+        speed: 0.002,
+        height: 50,
+        constraint: 150,
+        rgba: [1, 35, 34, 255],
+      }));
 
-          waves.push(new Wave(p, {
-            noiseOffset: 200,
-            noiseStep: 0.0025,
-            speed: 0.003,
-            rgba: [0, 0, 0, 255],
-          }));
-        };
-
-        p.draw = () => {
-          p.background(0);
-          p.stroke(255);
-          p.strokeWeight(1);
-          waves.forEach((wave) => wave.show());
-        };
-
-        p.windowResized = () => {
-          p.resizeCanvas(sketchParent.value?.clientWidth, window.innerHeight);
-        };
-      });
-    });
-
-    onUnmounted(() => {
-      p5.remove();
-    });
-
-    return {
-      sketchParent,
+      waves.push(new Wave(p, {
+        noiseOffset: 200,
+        noiseStep: 0.0025,
+        speed: 0.003,
+        rgba: [0, 0, 0, 255],
+      }));
     };
-  },
+
+    p.draw = () => {
+      p.background(0);
+      p.stroke(255);
+      p.strokeWeight(1);
+      waves.forEach((wave) => wave.show());
+    };
+
+    p.windowResized = () => {
+      p.resizeCanvas(sketchParent.value?.clientWidth, window.innerHeight);
+    };
+  });
+});
+
+onUnmounted(() => {
+  p5.remove();
 });
 </script>
